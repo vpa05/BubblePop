@@ -167,6 +167,12 @@ window.onload = function () {
       h1txt.innerText = `Game is Tie`;
       winner.appendChild(h1txt);
     }
+    const restartEle = document.createElement("button");
+    restartEle.classList.add("restartcls");
+    restartEle.innerText = `Restart Game`;
+    body.appendChild(restartEle);
+    let restartElement = document.querySelector(".restartcls");
+    restartElement.addEventListener("click", restartEventHandler);
   }
   //reset score for each player
   function updateScore(score, remainingBubbles) {
@@ -177,3 +183,6 @@ window.onload = function () {
     bubbleleftele.textContent = remainingBubbles;
   }
 };
+function restartEventHandler(evt) {
+  location.reload();
+}
