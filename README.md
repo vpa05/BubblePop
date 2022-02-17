@@ -11,6 +11,6 @@ Introduction :
 -Once time is up the player1 game stops and ask player 2 to start his/her game by clicking on button which ha splayer 2 name on it.
 -Player2 also have 15seconds game time with same condition.
 -Finally the winner of the game is announced depending on each players score.
-
+-You can restart the game by clicking on restart button
 Technologies use: 
 HTML,CSS,JavaScript
