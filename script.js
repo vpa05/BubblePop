@@ -3,14 +3,13 @@ let windowHeight = window.innerHeight;
 const totalBubble = 15;
 let popped = 0;
 let bubbleleft = 15;
+//create objects for two players to keep in track of id,name and their score
 let gamer1 = { id: 1, name: "Player 1", score: 0 };
 let gamer2 = { id: 2, name: "Player 2", score: 0 };
 let currentGamer;
-
-// height where bubbles should be present
 let body = document.body;
 let gameTime = null;
-
+// to give random colors for bubbles each time it is created
 let colors = [
   "rgb(230, 204, 34)",
   "rgb(240, 141, 168)",
@@ -22,7 +21,7 @@ window.onload = function () {
   const score = document.querySelector(".score-board"); // hiding score board in main page
   score.style.visibility = "hidden";
 
-  const start = document.querySelector(".startbtn"); //adding eventlistenerto start button
+  const start = document.querySelector(".startbtn"); //adding eventlistener to start button
   start.addEventListener("click", flashMessageEvent);
 
   function flashMessageEvent(evt) {
@@ -44,7 +43,7 @@ window.onload = function () {
     let mainpage = document.querySelector(".main-game");
     mainpage.style.visibility = "hidden";
     setTimeout(() => {
-      //setting timeout for flash message
+      //setting timeout for flash message and start the game after 2secs
       flashMessage.remove();
       startGame(gamer1);
     }, 2000);
@@ -60,35 +59,34 @@ window.onload = function () {
     score.style.visibility = "visible"; //making score board visible
     for (let i = 0; i < totalBubble; i++) {
       let newBubble = createBubble(i); //calling creating bubble function
-      newBubble.addEventListener("click", bubbleClickHandler);
+      newBubble.addEventListener("click", bubbleClickHandler); // assigning click event on each bubble created
     }
   }
   function createBubble(i) {
-    let bubbleDiv = document.createElement("div");
+    let bubbleDiv = document.createElement("div"); // creating div for each bubble
     bubbleDiv.classList.add("bubbles");
     let currentColorIndex = Math.floor(Math.random() * 4);
     bubbleDiv.style.bottom = Math.random() * -window.outerHeight + "px";
-    bubbleDiv.style.backgroundColor = colors[currentColorIndex];
+    bubbleDiv.style.backgroundColor = colors[currentColorIndex]; // random index to give color
     bubbleDiv.style.opacity = "1";
-    bubbleDiv.innerText = Math.floor(Math.random() * 15);
-
-    rand = Math.floor(Math.random() * (windowWidth - 100));
+    bubbleDiv.innerText = Math.floor(Math.random() * 15); // adding random score for each bubble
+    rand = Math.floor(Math.random() * (windowWidth - 100)); // create bubble at random place
     bubbleDiv.style.left = rand + "px";
     bubbleDiv.style.right = rand + "px";
-    document.body.appendChild(bubbleDiv);
+    document.body.appendChild(bubbleDiv); // append bubble to body
     return bubbleDiv;
   }
   // remove bubble on clicking
   function bubbleClickHandler(evt) {
     console.log(evt.target);
-    const currentBubble = evt.target;
-    currentBubble.remove();
+    const currentBubble = evt.target; // get the target element on clicking
+    currentBubble.remove(); // remove after clicking
     bubbleleft--; // reducing count and updating score board
     let currentScore = currentBubble.innerText;
     // console.log(currentScore);
     let tonumber = parseInt(currentScore);
-    popped = popped + tonumber;
-    updateScore(popped, bubbleleft);
+    popped = popped + tonumber; // adding up the score
+    updateScore(popped, bubbleleft); // score update function to update on score
     currentGamer.score = popped;
   }
   //calling timeout function after 15sec
@@ -112,9 +110,9 @@ window.onload = function () {
       newh1.innerText = "Time Up!!!!!";
       timeover.appendChild(newh1);
     }
-    //start second gamer by Player 2 start button
+    //start second gamer by Player 2 start button by checking that player id
     if (currentGamer.id == 1) {
-      //if player one this block executes else go to find who is winner
+      //if player1-this block executes else go to find who is winner
       const player2start = document.createElement("button");
       player2start.classList.add("player2start");
       body.appendChild(player2start);
@@ -122,12 +120,11 @@ window.onload = function () {
       newh2.innerText = `${gamer2.name} start`;
       player2start.appendChild(newh2);
       let getplayer2start = document.querySelector(".player2start");
-      getplayer2start.addEventListener("click", secondGamerEventHandler); // secong player game starts on clicking button
-      //getplayer2start.addEventListener("click", secondGamerEventHandler.bind(this, gamer1));
+      getplayer2start.addEventListener("click", secondGamerEventHandler); // second player game starts on clicking button
     } else {
       //winner who?
       setTimeout(() => {
-        winner();
+        winner(); // callong winner function to decide on winner after 3sec
       }, 3000);
     }
   }
@@ -137,25 +134,25 @@ window.onload = function () {
     timeupEl.style.visibility = "hidden";
     let getp2btn = document.querySelector(".player2start");
     getp2btn.style.visibility = "hidden";
-    popped = 0;
+    popped = 0; // re initializing variables
     bubbleleft = totalBubble;
     updateScore(popped, bubbleleft);
-    startGame(gamer2);
+    startGame(gamer2); // calling game start function for player2
   }
   //winner deciding function
   function winner() {
     let score1 = gamer1.score;
     let score2 = gamer2.score;
-    const scoreboard = document.querySelector(".score-board"); // hiding score board in main page
+    const scoreboard = document.querySelector(".score-board");
     scoreboard.style.visibility = "hidden";
 
-    const timeupEl = document.querySelector(".timeup"); // hiding score board in main page
+    const timeupEl = document.querySelector(".timeup");
     timeupEl.style.visibility = "hidden";
 
     const winner = document.createElement("div");
     winner.classList.add("winnercls");
     body.appendChild(winner);
-    let h1txt = document.createElement("h1");
+    let h1txt = document.createElement("h1"); // deciding on winner based on score
     if (score1 > score2) {
       h1txt.innerText = `${gamer1.name} Wins !`;
       winner.appendChild(h1txt);
@@ -166,7 +163,7 @@ window.onload = function () {
     if (score1 == score2) {
       h1txt.innerText = `Game is Tie`;
       winner.appendChild(h1txt);
-    }
+    } //  creating restart button and adding eventhandler to it
     const restartEle = document.createElement("button");
     restartEle.classList.add("restartcls");
     restartEle.innerText = `Restart Game`;
@@ -174,7 +171,7 @@ window.onload = function () {
     let restartElement = document.querySelector(".restartcls");
     restartElement.addEventListener("click", restartEventHandler);
   }
-  //reset score for each player
+
   function updateScore(score, remainingBubbles) {
     let scoreEle = document.querySelector(".score");
     scoreEle.textContent = score;
@@ -184,5 +181,5 @@ window.onload = function () {
   }
 };
 function restartEventHandler(evt) {
-  location.reload();
+  location.reload(); // restart the game by reloading the page
 }
